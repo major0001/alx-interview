@@ -1,24 +1,33 @@
 #!/usr/bin/python3
-'''2D matrix'''
+"""
+Defines function that can rotate 2D NxN matrix 90 degrees clockwise in place
+"""
 
 
 def rotate_2d_matrix(matrix):
-    '''rotates a 2d matrix 90° clockwise
-    Returns: Nothing '''
-    left, right = 0, len(matrix) - 1
+    """
+    Rotates 2D NxN matrix 90 degrees clockwise in place
 
-    while left < right:
-        for i in range(right - left):
-            top, bottom = left, right
-            # save topleft  value
-            topLeft = matrix[top][left + i]
-            # move bottom left to top left
-            matrix[top][left + i] = matrix[bottom - i][left]
-            # move bottom right to bottom left
-            matrix[bottom - i][left] = matrix[bottom][right - i]
-            # move top right to bottom right
-            matrix[bottom][right - i] = matrix[top + i][right]
-            # move top left to top right
-            matrix[top + i][right] = topLeft
-        right -= 1
-        left += 1
+    parameters:
+        matrix [list of lists of ints]:
+            matrix to rotate
+            can be assumed to have 2 dimensions and will not be empty
+    """
+    # save original row and column size from input matrix
+    N = len(matrix)
+
+    # build rotated matrix in a separate matrix_copy
+    matrix_copy = []
+    copy_row = 0
+    for column in range(N):
+        for row in range((N - 1), -1, -1):
+            if column is 0:
+                matrix_copy.append([])
+            matrix_copy[copy_row].append(matrix[row][column])
+        copy_row += 1
+
+    # copy contents of matrix_copy into matrix
+    # since matrix is NxN, do not need to resize matrix for rotation
+    for row in range(N):
+        for column in range(N):
+            matrix[row][column] = matrix_copy[row][column]
